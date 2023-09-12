@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TB_xray_systems.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="TB_xray_systemsStoreContainer">
+    <EntitySet Name="UserSet" EntityType="TB_xray_systems.Store.UserSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DeletionRequestSet" EntityType="TB_xray_systems.Store.DeletionRequestSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ReportSet" EntityType="TB_xray_systems.Store.ReportSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ScreeningHistorySet" EntityType="TB_xray_systems.Store.ScreeningHistorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ScreeningImageSet" EntityType="TB_xray_systems.Store.ScreeningImageSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSet_Patient" EntityType="TB_xray_systems.Store.UserSet_Patient" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSet_MedicalProfessional" EntityType="TB_xray_systems.Store.UserSet_MedicalProfessional" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSet_Administrator" EntityType="TB_xray_systems.Store.UserSet_Administrator" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PatientDeletionRequest" Association="TB_xray_systems.Store.PatientDeletionRequest">
+      <End Role="Patient" EntitySet="UserSet_Patient" />
+      <End Role="DeletionRequest" EntitySet="DeletionRequestSet" />
+    </AssociationSet>
+    <AssociationSet Name="ScreeningHistoryScreeningImage" Association="TB_xray_systems.Store.ScreeningHistoryScreeningImage">
+      <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+      <End Role="ScreeningImage" EntitySet="ScreeningImageSet" />
+    </AssociationSet>
+    <AssociationSet Name="ScreeningHistoryMedicalProfessional" Association="TB_xray_systems.Store.ScreeningHistoryMedicalProfessional">
+      <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+      <End Role="MedicalProfessional" EntitySet="UserSet_MedicalProfessional" />
+    </AssociationSet>
+    <AssociationSet Name="ScreeningHistoryPatient" Association="TB_xray_systems.Store.ScreeningHistoryPatient">
+      <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+      <End Role="Patient" EntitySet="UserSet_Patient" />
+    </AssociationSet>
+    <AssociationSet Name="ScreeningHistoryReport" Association="TB_xray_systems.Store.ScreeningHistoryReport">
+      <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+      <End Role="Report" EntitySet="ReportSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Patient_inherits_User" Association="TB_xray_systems.Store.FK_Patient_inherits_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Patient" EntitySet="UserSet_Patient" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MedicalProfessional_inherits_User" Association="TB_xray_systems.Store.FK_MedicalProfessional_inherits_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="MedicalProfessional" EntitySet="UserSet_MedicalProfessional" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Administrator_inherits_User" Association="TB_xray_systems.Store.FK_Administrator_inherits_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Administrator" EntitySet="UserSet_Administrator" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserSet">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_fullname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_status" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DeletionRequestSet">
+    <Key>
+      <PropertyRef Name="dr_id" />
+    </Key>
+    <Property Name="dr_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Patient_patient_id" Type="int" Nullable="false" />
+    <Property Name="dr_reason" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="dr_status" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReportSet">
+    <Key>
+      <PropertyRef Name="report_id" />
+    </Key>
+    <Property Name="report_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="report_content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ScreeningHistoryReport_Report_sh_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ScreeningHistorySet">
+    <Key>
+      <PropertyRef Name="sh_id" />
+    </Key>
+    <Property Name="sh_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sh_datetime" Type="datetime" Nullable="false" />
+    <Property Name="sh_additional" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MedicalProfessional_user_id" Type="int" Nullable="false" />
+    <Property Name="Patient_user_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ScreeningImageSet">
+    <Key>
+      <PropertyRef Name="si_id" />
+    </Key>
+    <Property Name="si_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="si_file" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="si_additional" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ScreeningHistory_sh_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSet_Patient">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="patient_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="patient_address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="patient_phone" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="patient_medical_history" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSet_MedicalProfessional">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="mp_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSet_Administrator">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="admin_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PatientDeletionRequest">
+    <End Role="Patient" Type="TB_xray_systems.Store.UserSet_Patient" Multiplicity="1" />
+    <End Role="DeletionRequest" Type="TB_xray_systems.Store.DeletionRequestSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Patient">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="DeletionRequest">
+        <PropertyRef Name="Patient_patient_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ScreeningHistoryScreeningImage">
+    <End Role="ScreeningHistory" Type="TB_xray_systems.Store.ScreeningHistorySet" Multiplicity="1" />
+    <End Role="ScreeningImage" Type="TB_xray_systems.Store.ScreeningImageSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ScreeningHistory">
+        <PropertyRef Name="sh_id" />
+      </Principal>
+      <Dependent Role="ScreeningImage">
+        <PropertyRef Name="ScreeningHistory_sh_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ScreeningHistoryMedicalProfessional">
+    <End Role="ScreeningHistory" Type="TB_xray_systems.Store.ScreeningHistorySet" Multiplicity="*" />
+    <End Role="MedicalProfessional" Type="TB_xray_systems.Store.UserSet_MedicalProfessional" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="MedicalProfessional">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="ScreeningHistory">
+        <PropertyRef Name="MedicalProfessional_user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ScreeningHistoryPatient">
+    <End Role="ScreeningHistory" Type="TB_xray_systems.Store.ScreeningHistorySet" Multiplicity="*" />
+    <End Role="Patient" Type="TB_xray_systems.Store.UserSet_Patient" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Patient">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="ScreeningHistory">
+        <PropertyRef Name="Patient_user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ScreeningHistoryReport">
+    <End Role="ScreeningHistory" Type="TB_xray_systems.Store.ScreeningHistorySet" Multiplicity="1" />
+    <End Role="Report" Type="TB_xray_systems.Store.ReportSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ScreeningHistory">
+        <PropertyRef Name="sh_id" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="ScreeningHistoryReport_Report_sh_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Patient_inherits_User">
+    <End Role="User" Type="TB_xray_systems.Store.UserSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Patient" Type="TB_xray_systems.Store.UserSet_Patient" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Patient">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MedicalProfessional_inherits_User">
+    <End Role="User" Type="TB_xray_systems.Store.UserSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="MedicalProfessional" Type="TB_xray_systems.Store.UserSet_MedicalProfessional" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="MedicalProfessional">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Administrator_inherits_User">
+    <End Role="User" Type="TB_xray_systems.Store.UserSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Administrator" Type="TB_xray_systems.Store.UserSet_Administrator" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Administrator">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="TB_xray_systems" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="TB_xray_systemsContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSet" EntityType="TB_xray_systems.User" />
+          <EntitySet Name="DeletionRequestSet" EntityType="TB_xray_systems.DeletionRequest" />
+          <AssociationSet Name="PatientDeletionRequest" Association="TB_xray_systems.PatientDeletionRequest">
+            <End Role="Patient" EntitySet="UserSet" />
+            <End Role="DeletionRequest" EntitySet="DeletionRequestSet" />
+          </AssociationSet>
+          <EntitySet Name="ReportSet" EntityType="TB_xray_systems.Report" />
+          <EntitySet Name="ScreeningHistorySet" EntityType="TB_xray_systems.ScreeningHistory" />
+          <EntitySet Name="ScreeningImageSet" EntityType="TB_xray_systems.ScreeningImage" />
+          <AssociationSet Name="ScreeningHistoryScreeningImage" Association="TB_xray_systems.ScreeningHistoryScreeningImage">
+            <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+            <End Role="ScreeningImage" EntitySet="ScreeningImageSet" />
+          </AssociationSet>
+          <AssociationSet Name="ScreeningHistoryMedicalProfessional" Association="TB_xray_systems.ScreeningHistoryMedicalProfessional">
+            <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+            <End Role="MedicalProfessional" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="ScreeningHistoryPatient" Association="TB_xray_systems.ScreeningHistoryPatient">
+            <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+            <End Role="Patient" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="ScreeningHistoryReport" Association="TB_xray_systems.ScreeningHistoryReport">
+            <End Role="ScreeningHistory" EntitySet="ScreeningHistorySet" />
+            <End Role="Report" EntitySet="ReportSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_username" Type="String" Nullable="false" />
+          <Property Name="user_password" Type="String" Nullable="false" />
+          <Property Name="user_email" Type="String" Nullable="false" />
+          <Property Name="user_fullname" Type="String" Nullable="false" />
+          <Property Name="user_status" Type="String" Nullable="false" />
+        </EntityType>
+        <EnumType Name="user_status">
+          <Member Name="enabled" />
+          <Member Name="disabled" />
+        </EnumType>
+        <EntityType Name="Administrator" BaseType="TB_xray_systems.User">
+          <Property Name="admin_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Patient" BaseType="TB_xray_systems.User">
+          <Property Name="patient_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="patient_address" Type="String" Nullable="false" />
+          <Property Name="patient_phone" Type="String" Nullable="false" />
+          <Property Name="patient_medical_history" Type="String" Nullable="false" />
+          <NavigationProperty Name="DeletionRequest" Relationship="TB_xray_systems.PatientDeletionRequest" FromRole="Patient" ToRole="DeletionRequest" />
+          <NavigationProperty Name="ScreeningHistory" Relationship="TB_xray_systems.ScreeningHistoryPatient" FromRole="Patient" ToRole="ScreeningHistory" />
+        </EntityType>
+        <EntityType Name="DeletionRequest">
+          <Key>
+            <PropertyRef Name="dr_id" />
+          </Key>
+          <Property Name="dr_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Patient_patient_id" Type="Int32" Nullable="false" />
+          <Property Name="dr_reason" Type="String" Nullable="false" />
+          <Property Name="dr_status" Type="String" Nullable="false" />
+        </EntityType>
+        <EnumType Name="dr_status" >
+          <Member Name="pending" />
+          <Member Name="approved" />
+          <Member Name="rejected" />
+        </EnumType>
+        <ComplexType Name="test" />
+        <Association Name="PatientDeletionRequest">
+          <End Type="TB_xray_systems.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="TB_xray_systems.DeletionRequest" Role="DeletionRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="DeletionRequest">
+              <PropertyRef Name="Patient_patient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="report_id" />
+          </Key>
+          <Property Name="report_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="report_content" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MedicalProfessional" BaseType="TB_xray_systems.User">
+          <Property Name="mp_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="ScreeningHistory">
+          <Key>
+            <PropertyRef Name="sh_id" />
+          </Key>
+          <Property Name="sh_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sh_datetime" Type="DateTime" Nullable="false" />
+          <Property Name="sh_additional" Type="String" Nullable="false" />
+          <NavigationProperty Name="ScreeningImage" Relationship="TB_xray_systems.ScreeningHistoryScreeningImage" FromRole="ScreeningHistory" ToRole="ScreeningImage" />
+          <NavigationProperty Name="MedicalProfessional" Relationship="TB_xray_systems.ScreeningHistoryMedicalProfessional" FromRole="ScreeningHistory" ToRole="MedicalProfessional" />
+          <Property Name="MedicalProfessional_user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="TB_xray_systems.ScreeningHistoryPatient" FromRole="ScreeningHistory" ToRole="Patient" />
+          <Property Name="Patient_user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Report" Relationship="TB_xray_systems.ScreeningHistoryReport" FromRole="ScreeningHistory" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="ScreeningImage">
+          <Key>
+            <PropertyRef Name="si_id" />
+          </Key>
+          <Property Name="si_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="si_file" Type="String" Nullable="false" />
+          <Property Name="si_additional" Type="String" Nullable="false" />
+          <NavigationProperty Name="ScreeningHistory" Relationship="TB_xray_systems.ScreeningHistoryScreeningImage" FromRole="ScreeningImage" ToRole="ScreeningHistory" />
+          <Property Name="ScreeningHistory_sh_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="ScreeningHistoryScreeningImage">
+          <End Type="TB_xray_systems.ScreeningHistory" Role="ScreeningHistory" Multiplicity="1" />
+          <End Type="TB_xray_systems.ScreeningImage" Role="ScreeningImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScreeningHistory">
+              <PropertyRef Name="sh_id" />
+            </Principal>
+            <Dependent Role="ScreeningImage">
+              <PropertyRef Name="ScreeningHistory_sh_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ScreeningHistoryMedicalProfessional">
+          <End Type="TB_xray_systems.ScreeningHistory" Role="ScreeningHistory" Multiplicity="*" />
+          <End Type="TB_xray_systems.MedicalProfessional" Role="MedicalProfessional" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="MedicalProfessional">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="ScreeningHistory">
+              <PropertyRef Name="MedicalProfessional_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ScreeningHistoryPatient">
+          <End Type="TB_xray_systems.ScreeningHistory" Role="ScreeningHistory" Multiplicity="*" />
+          <End Type="TB_xray_systems.Patient" Role="Patient" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="ScreeningHistory">
+              <PropertyRef Name="Patient_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ScreeningHistoryReport">
+          <End Type="TB_xray_systems.ScreeningHistory" Role="ScreeningHistory" Multiplicity="1" />
+          <End Type="TB_xray_systems.Report" Role="Report" Multiplicity="0..1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TB_xray_systemsStoreContainer" CdmEntityContainer="TB_xray_systemsContainer">
+    <EntitySetMapping Name="UserSet">
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.User)">
+        <MappingFragment StoreEntitySet="UserSet">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="user_username" ColumnName="user_username" />
+          <ScalarProperty Name="user_password" ColumnName="user_password" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="user_fullname" ColumnName="user_fullname" />
+          <ScalarProperty Name="user_status" ColumnName="user_status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.Patient)">
+        <MappingFragment StoreEntitySet="UserSet_Patient">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="patient_id" ColumnName="patient_id" />
+          <ScalarProperty Name="patient_address" ColumnName="patient_address" />
+          <ScalarProperty Name="patient_phone" ColumnName="patient_phone" />
+          <ScalarProperty Name="patient_medical_history" ColumnName="patient_medical_history" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.MedicalProfessional)">
+        <MappingFragment StoreEntitySet="UserSet_MedicalProfessional">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="mp_id" ColumnName="mp_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.Administrator)">
+        <MappingFragment StoreEntitySet="UserSet_Administrator">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeletionRequestSet">
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.DeletionRequest)">
+        <MappingFragment StoreEntitySet="DeletionRequestSet">
+          <ScalarProperty Name="dr_id" ColumnName="dr_id" />
+          <ScalarProperty Name="Patient_patient_id" ColumnName="Patient_patient_id" />
+          <ScalarProperty Name="dr_reason" ColumnName="dr_reason" />
+          <ScalarProperty Name="dr_status" ColumnName="dr_status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReportSet">
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.Report)">
+        <MappingFragment StoreEntitySet="ReportSet">
+          <ScalarProperty Name="report_id" ColumnName="report_id" />
+          <ScalarProperty Name="report_content" ColumnName="report_content" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScreeningHistorySet">
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.ScreeningHistory)">
+        <MappingFragment StoreEntitySet="ScreeningHistorySet">
+          <ScalarProperty Name="sh_id" ColumnName="sh_id" />
+          <ScalarProperty Name="sh_datetime" ColumnName="sh_datetime" />
+          <ScalarProperty Name="sh_additional" ColumnName="sh_additional" />
+          <ScalarProperty Name="MedicalProfessional_user_id" ColumnName="MedicalProfessional_user_id" />
+          <ScalarProperty Name="Patient_user_id" ColumnName="Patient_user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScreeningImageSet">
+      <EntityTypeMapping TypeName="IsTypeOf(TB_xray_systems.ScreeningImage)">
+        <MappingFragment StoreEntitySet="ScreeningImageSet">
+          <ScalarProperty Name="si_id" ColumnName="si_id" />
+          <ScalarProperty Name="si_file" ColumnName="si_file" />
+          <ScalarProperty Name="si_additional" ColumnName="si_additional" />
+          <ScalarProperty Name="ScreeningHistory_sh_id" ColumnName="ScreeningHistory_sh_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ScreeningHistoryReport" TypeName="TB_xray_systems.ScreeningHistoryReport" StoreEntitySet="ReportSet">
+      <EndProperty Name="ScreeningHistory">
+        <ScalarProperty Name="sh_id" ColumnName="ScreeningHistoryReport_Report_sh_id" />
+      </EndProperty>
+      <EndProperty Name="Report">
+        <ScalarProperty Name="report_id" ColumnName="report_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

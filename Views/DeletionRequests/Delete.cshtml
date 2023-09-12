@@ -1,0 +1,49 @@
+﻿@model FIT5032_TB_xray_report_system_v2.Models.DeletionRequest
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>DeletionRequest</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient_patient_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient_patient_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dr_reason)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dr_reason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dr_status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dr_status)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<FIT5032_TB_xray_report_system_v2.Models.Report>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.report_content)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.report_content)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.report_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.report_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.report_id })
+        </td>
+    </tr>
+}
+
+</table>
