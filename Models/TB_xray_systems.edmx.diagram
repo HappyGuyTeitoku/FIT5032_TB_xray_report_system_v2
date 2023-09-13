@@ -6,17 +6,17 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ba481a057b1a486186c530f6d7223874" Name="Diagram1" DisplayType="true" ShowGrid="true" >
         <EntityTypeShape EntityType="TB_xray_systems.User" Width="1.875" PointX="1.25" PointY="3.25" />
-        <EntityTypeShape EntityType="TB_xray_systems.Administrator" Width="1.5" PointX="1.25" PointY="0.625" />
+        <EntityTypeShape EntityType="TB_xray_systems.Administrator" Width="1.5" PointX="1.25" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TB_xray_systems.Patient" Width="2.375" PointX="5.625" PointY="0.5" />
         <EntityTypeShape EntityType="TB_xray_systems.DeletionRequest" Width="2.25" PointX="9.125" PointY="0.75" />
         <AssociationConnector Association="TB_xray_systems.PatientDeletionRequest" />
         <InheritanceConnector EntityType="TB_xray_systems.Administrator" />
         <InheritanceConnector EntityType="TB_xray_systems.Patient" ManuallyRouted="true" >
           <ConnectorPoint PointX="2.1875" PointY="3.25" />
-          <ConnectorPoint PointX="2.1875" PointY="2.7348089020362636" />
-          <ConnectorPoint PointX="3.4333332190290093" PointY="2.7348089020362636" />
-          <ConnectorPoint PointX="3.4333332190290093" PointY="1.8042581524256263" />
-          <ConnectorPoint PointX="5.625" PointY="1.8042581524256263" />
+          <ConnectorPoint PointX="2.1875" PointY="2.2374456774638944" />
+          <ConnectorPoint PointX="4.490625" PointY="2.2374456774638944" />
+          <ConnectorPoint PointX="4.490625" PointY="1.6124457622142487" />
+          <ConnectorPoint PointX="5.625" PointY="1.6124457622142487" />
         </InheritanceConnector>
         <EntityTypeShape EntityType="TB_xray_systems.Report" Width="1.875" PointX="9" PointY="5.375" />
         <EntityTypeShape EntityType="TB_xray_systems.MedicalProfessional" Width="1.5" PointX="3.375" PointY="5.75" />
