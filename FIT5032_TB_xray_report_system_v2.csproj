@@ -132,6 +132,7 @@
     <Compile Include="Controllers\DeletionRequestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\ScreeningHistoriesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -225,6 +226,7 @@
       <DependentUpon>TB_xray_systems.edmx</DependentUpon>
     </Content>
     <Content Include="Models\TB_xray_systems_v3.edmx.sql" />
+    <Content Include="Models\TB_xray_systems_v4.edmx.sql" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -277,8 +279,15 @@
     <Content Include="Views\DeletionRequests\Details.cshtml" />
     <Content Include="Views\DeletionRequests\Edit.cshtml" />
     <Content Include="Views\DeletionRequests\Index.cshtml" />
+    <Content Include="Views\ScreeningHistories\Create.cshtml" />
+    <Content Include="Views\ScreeningHistories\Delete.cshtml" />
+    <Content Include="Views\ScreeningHistories\Details.cshtml" />
+    <Content Include="Views\ScreeningHistories\Edit.cshtml" />
+    <Content Include="Views\ScreeningHistories\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\Uploads\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />

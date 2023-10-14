@@ -30,5 +30,11 @@ namespace FIT5032_TB_xray_report_system_v2.Models
         public virtual DbSet<Report> ReportSet { get; set; }
         public virtual DbSet<ScreeningHistory> ScreeningHistorySet { get; set; }
         public virtual DbSet<ScreeningImage> ScreeningImageSet { get; set; }
+        
+        // Manual
+        public virtual DbSet<Administrator> UserSet_Administrator { get; set; }
+        public virtual DbSet<MedicalProfessional> UserSet_MedicalProfessional { get; set; }
+        public virtual DbSet<Patient> UserSet_Patient { get; set; }
+
     }
 }

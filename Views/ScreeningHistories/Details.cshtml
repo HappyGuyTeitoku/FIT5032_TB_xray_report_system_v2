@@ -1,0 +1,59 @@
+﻿@model FIT5032_TB_xray_report_system_v2.Models.ScreeningHistory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ScreeningHistory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.sh_datetime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sh_datetime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sh_additional)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sh_additional)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicalProfessional.user_username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MedicalProfessional.user_username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.user_username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.user_username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Report.report_content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Report.report_content)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.sh_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

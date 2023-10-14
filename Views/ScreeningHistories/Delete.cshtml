@@ -1,0 +1,65 @@
+﻿@model FIT5032_TB_xray_report_system_v2.Models.ScreeningHistory
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ScreeningHistory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.sh_datetime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sh_datetime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sh_additional)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sh_additional)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicalProfessional.user_username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MedicalProfessional.user_username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.user_username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.user_username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Report.report_content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Report.report_content)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

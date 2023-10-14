@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -38,6 +39,10 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
         // GET: Reports/Create
         public ActionResult Create()
         {
+            ViewBag.ScreeningHistoryId = new SelectList(db.ScreeningHistorySet, "sh_id");
+            ViewBag.PatientId = new SelectList(db.UserSet_Patient, "user_id", "user_fullname");
+            ViewBag.MedicalProfessionalId = new SelectList(db.UserSet_MedicalProfessional, "user_id", "user_fullname");
+
             return View();
         }
 
@@ -46,10 +51,36 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "report_id,report_content")] Report report)
+        public ActionResult Create([Bind(Include = "report_id,report_content")] Report report, IEnumerable<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
+                var newScreeningHistory = new ScreeningHistory();
+                newScreeningHistory.sh_additional = "This SH is automatically created";
+                newScreeningHistory.sh_datetime = DateTime.Now;
+                db.ScreeningHistorySet.Add(newScreeningHistory);
+                
+                if (files != null) { 
+                    foreach (var file in files)
+                    {
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            // Process each uploaded file
+                            string fileName = Path.GetFileName(file.FileName);
+                            string filePath = Path.Combine(Server.MapPath("~/App_Data/Uploads"), fileName);
+                            file.SaveAs(filePath);
+
+                            var newImage = new ScreeningImage();
+
+                            newImage.si_file = filePath;
+                            newImage.ScreeningHistory_sh_id = newScreeningHistory.sh_id;
+
+                            // Add the image as record into ScreeningImages
+                            db.ScreeningImageSet.Add(newImage);
+                        
+                        }
+                    }
+                }
                 db.ReportSet.Add(report);
                 db.SaveChanges();
                 return RedirectToAction("Index");
