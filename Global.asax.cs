@@ -17,5 +17,11 @@ namespace FIT5032_TB_xray_report_system_v2
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Session_Start(object sender, EventArgs e)
+        {
+            // Configure session timeout and other settings
+            Session.Timeout = 30; // Set session timeout to 30 minutes
+        }
     }
 }

@@ -26,9 +26,9 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
         }
 
         public ActionResult Verify(User_2 user)
-        { 
-            con.Open();
+        {
             cmd.Connection = con;
+            con.Open();
             cmd.CommandText = "SELECT * FROM UserSet where user_username = '"+user.Username+"' and password = '"+user.Password+"'";
             sdr = cmd.ExecuteReader();
             if (sdr.Read())

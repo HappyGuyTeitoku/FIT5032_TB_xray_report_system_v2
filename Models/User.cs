@@ -11,7 +11,9 @@ namespace FIT5032_TB_xray_report_system_v2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("UserSet")]
     public partial class User
     {
         public int user_id { get; set; }

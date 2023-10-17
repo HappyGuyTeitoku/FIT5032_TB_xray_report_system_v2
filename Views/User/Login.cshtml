@@ -1,7 +1,36 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
+    @model FIT5032_TB_xray_report_system_v2.Models.User
 }
 
-<h2>Login</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TB Xray Report Systems</title>
+    <style>
+        .form-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px auto; /* Center horizontally */
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        @using (Html.BeginForm("Verify", "User", FormMethod.Post))
+        {
+            @Html.LabelFor(model => model.user_username, "Username", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(model => model.user_username)
 
+            @Html.LabelFor(model => model.user_password, "Password", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.PasswordFor(model => model.user_password)
+
+            <input type="submit" value="Login" />
+        }
+    </div>
+</body>
+</html>
