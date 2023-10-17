@@ -16,21 +16,51 @@
             margin: 20px auto; /* Center horizontally */
             width: 300px;
         }
+
+        .form-row {
+            margin-bottom: 10px; /* Adjust the space between rows */
+        }
+
+        .form-row label {
+            display: inline-block;
+            width: 120px; /* Adjust the width based on your preference */
+        }
+
+        .form-row input[type="text"],
+        .form-row input[type="password"] {
+            width: calc(100% - 120px); /* Adjust the calculation based on the label width */
+            max-width: 100%; /* Ensure the text box doesn't overflow */
+        }
+
+        /* Override Bootstrap styles for col-md-2 */
+        @@media (min-width: 768px) {
+            .col-md-2 {
+                max-width: none; /* Remove the max-width restriction */
+                flex: 0 0 auto; /* Reset the flex properties */
+                width: auto; /* Set width to auto */
+            }
+        }
     </style>
+
+
 </head>
 <body>
     <div class="form-container">
         <h2>Login</h2>
         @using (Html.BeginForm("Verify", "User", FormMethod.Post))
         {
-            @Html.LabelFor(model => model.user_username, "Username", htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.TextBoxFor(model => model.user_username)
+            <div class="form-row">
+                @Html.LabelFor(model => model.user_username, "Username", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.user_username)
+            </div>
 
-            @Html.LabelFor(model => model.user_password, "Password", htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.PasswordFor(model => model.user_password)
-
+            <div class="form-row">
+                @Html.LabelFor(model => model.user_password, "Password", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.PasswordFor(model => model.user_password)
+            </div>
+            
             <input type="submit" value="Login" />
-        }
-    </div>
+          }
+     </div>
 </body>
 </html>

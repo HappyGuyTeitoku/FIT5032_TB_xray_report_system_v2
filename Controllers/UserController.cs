@@ -25,23 +25,32 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             return View();
         }
 
-        public ActionResult Verify(User_2 user)
+        public ActionResult Verify(User login_user)
         {
+            string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\VisualStudiosProjects\FIT5032_TB_xray_report_system_v2\App_Data\FIT5032_TB_xray_report_system_v2.mdf;Integrated Security=True;Connect Timeout=30";
+            SqlConnection con = new SqlConnection(conString);
+
             cmd.Connection = con;
             con.Open();
-            cmd.CommandText = "SELECT * FROM UserSet where user_username = '"+user.Username+"' and password = '"+user.Password+"'";
+
+            // Use parameterized query to prevent SQL injection
+            cmd.CommandText = "SELECT * FROM UserSet WHERE user_username = '"+ login_user.user_username+"' AND user_password = '"+login_user.user_password+"'";
+
             sdr = cmd.ExecuteReader();
             if (sdr.Read())
             {
+                Session["UserId"] = login_user.user_id;
+                Session["Username"] = login_user.user_username;
                 con.Close();
-                return View();
+                return View("LoginSuccess");
             }
             else
             {
                 con.Close();
-                return View();
+                return View("LoginFail");
             }
         }
+
 
         // GET: User/Create
         public ActionResult Create() { 
