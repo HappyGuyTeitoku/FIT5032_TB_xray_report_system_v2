@@ -27,6 +27,11 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
 
         public ActionResult Verify(User login_user)
         {
+            // Initialise Session Manager values
+            Session["UserId"] = null;
+            Session["Username"] = null;
+            Session["UserRole"] = "NotFound";
+
             string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\VisualStudiosProjects\FIT5032_TB_xray_report_system_v2\App_Data\FIT5032_TB_xray_report_system_v2.mdf;Integrated Security=True;Connect Timeout=30";
             SqlConnection con = new SqlConnection(conString);
 
@@ -34,13 +39,50 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             con.Open();
 
             // Use parameterized query to prevent SQL injection
-            cmd.CommandText = "SELECT * FROM UserSet WHERE user_username = '"+ login_user.user_username+"' AND user_password = '"+login_user.user_password+"'";
+            cmd.CommandText = "SELECT * FROM UserSet WHERE user_username = @Username AND user_password = @Password";
+            // Assuming login_user is an object of User class
+            cmd.Parameters.AddWithValue("@Username", string.IsNullOrEmpty(login_user.user_username) ? (object)DBNull.Value : login_user.user_username);
+            cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(login_user.user_password) ? (object)DBNull.Value : login_user.user_password);
 
             sdr = cmd.ExecuteReader();
             if (sdr.Read())
             {
+
+                login_user.user_id = sdr.GetInt32(sdr.GetOrdinal("user_id"));
                 Session["UserId"] = login_user.user_id;
-                Session["Username"] = login_user.user_username;
+                Session["Username"] = sdr.GetString(sdr.GetOrdinal("user_username"));
+
+                List<string> RoleTables = new List<string> { "UserSet_Administrator", "UserSet_MedicalProfessional", "UserSet_Patient" };
+
+                foreach (string RoleTable in RoleTables)
+                { 
+                    sdr.Close();
+                    cmd.CommandText = $"SELECT * FROM {RoleTable} WHERE user_id = @UserId";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@UserId",login_user.user_id);
+
+                    sdr = cmd.ExecuteReader();
+                    if (sdr.Read())
+                    { 
+                        switch (RoleTable)
+                        {
+                            case "UserSet_Administrator":
+                                Session["UserRole"] = "Administrator";
+                                break;
+                            case "UserSet_MedicalProfessional":
+                                Session["UserRole"] = "MedicalProfessional";
+                                break;
+                            case "UserSet_Patient":
+                                Session["UserRole"] = "Patient";
+                                break;
+                            default:
+                                Session["UserRole"] = "NotFound";
+                                break;
+                        }
+                        break;
+                    }
+                }
+
                 con.Close();
                 return View("LoginSuccess");
             }
@@ -116,6 +158,16 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        // GET: User
+        [HttpGet]
+        public ActionResult LogoutSuccess()
+        {
+            Session["UserId"] = null;
+            Session["Username"] = null;
+            Session["UserRole"] = null;
+            return View();
         }
     }
 }

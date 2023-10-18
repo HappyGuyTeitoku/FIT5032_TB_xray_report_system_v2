@@ -53,17 +53,6 @@
                         </div>
                     </li>
 
-                    <!-- Users Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="reportsDropdown">
-                            @Html.ActionLink("Login", "Login", "User", new { area = "" }, new { @class = "dropdown-item" })
-                            @Html.ActionLink("Register", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
-                        </div>
-                    </li>
-
                     <!-- Screening History Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,6 +63,33 @@
                             @Html.ActionLink("New", "Create", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
                         </div>
                     </li>
+
+
+                    @if (Session["Username"] == null)
+                    {
+                        <!-- Users Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("Login", "Login", "User", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Register", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <!-- Users Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Session["UserId"] @Session["UserRole"] @Session["Username"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("Logout", "LogoutSuccess", "User", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
