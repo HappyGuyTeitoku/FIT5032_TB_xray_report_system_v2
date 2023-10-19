@@ -80,11 +80,11 @@
                         <!-- Users Dropdown (Account control for Admins) -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Account
+                                Account Management
                             </a>
                             <div class="dropdown-menu" aria-labelledby="reportsDropdown">
                                 @Html.ActionLink("Create", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Index", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Index", "Index", "User", new { area = "" }, new { @class = "dropdown-item" })
                             </div>
                         </li>
                     }

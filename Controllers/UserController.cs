@@ -170,5 +170,13 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             Session["UserRole"] = null;
             return View();
         }
+
+        // GET: User
+        [HttpGet]
+        public ActionResult Index() {
+
+            var model = db.UserSet;
+            return View(model);
+        }
     }
 }
