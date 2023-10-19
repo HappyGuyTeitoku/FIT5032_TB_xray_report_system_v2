@@ -37,35 +37,59 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
+
                     <!-- Home -->
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-
-                    <!-- Reports Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Reports
+                            Home
                         </a>
                         <div class="dropdown-menu" aria-labelledby="reportsDropdown">
-                            @Html.ActionLink("View Rp", "Index", "Reports", new { area = "" }, new { @class = "dropdown-item" })
-                            @Html.ActionLink("New Rp", "Create", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "dropdown-item" })
                         </div>
                     </li>
 
-                    <!-- Screening History Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            ScreeningHistories
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="reportsDropdown">
-                            @Html.ActionLink("View...", "Index", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
-                            @Html.ActionLink("New", "Create", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
-                        </div>
-                    </li>
+                    @if ((string)Session["UserRole"] == "Administrator")
+                    {
+                        <!-- Reports Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Reports
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View Rp", "Index", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("New Rp", "Create", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
 
+                        <!-- Screening History Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ScreeningHistories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View...", "Index", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("New", "Create", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
 
-                    @if (Session["Username"] == null)
+                    @if ((string)Session["UserRole"] == "Administrator")
+                    {
+                        <!-- Users Dropdown (Account control for Admins) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("Create", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Index", "Create", "User", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
+
+                    @if (Session["UserRole"] == null)
                     {
                         <!-- Users Dropdown -->
                         <li class="nav-item dropdown">
@@ -83,7 +107,7 @@
                         <!-- Users Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @Session["UserId"] @Session["UserRole"] @Session["Username"]
+                                @Session["UserRole"] @Session["Username"]
                             </a>
                             <div class="dropdown-menu" aria-labelledby="reportsDropdown">
                                 @Html.ActionLink("Logout", "LogoutSuccess", "User", new { area = "" }, new { @class = "dropdown-item" })

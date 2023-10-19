@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using FIT5032_TB_xray_report_system_v2.Models;
 using System.Diagnostics;
+using System.Web.Security;
 
 namespace FIT5032_TB_xray_report_system_v2.Controllers
 {
@@ -95,7 +96,7 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
 
 
         // GET: User/Create
-        public ActionResult Create() { 
+        public ActionResult Create() {
             return View();
         }
 

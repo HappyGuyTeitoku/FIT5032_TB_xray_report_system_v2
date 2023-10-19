@@ -1,9 +1,36 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Tuberculosis X-Ray Report System";
 }
 <main aria-labelledby="title">
     <h2 id="title">@ViewBag.Title.</h2>
     <h3>@ViewBag.Message</h3>
+    <div style="max-width:21cm">
+        This is a system for <b>Medical Professionals ("MPs")</b> to upload tuberculosis x-ray
+        screening results, in order to generate reports based on the screening, for patients to read
+        afterwards. <br /> <br />
 
-    <p>Use this area to provide additional information.</p>
+        <b>Administrators</b> of the company, using <b>administrator accounts</b>, will have full
+        CRUD+enabling/disabling control over MPs' and Patients' accounts, along with full CRUD
+        over every other kinds of record within the system. Administrators also handle record
+        deletion requests from Patients as mentioned below. <br /> <br />
+
+        The <b>MP accounts</b> will be able to create <b>screening history</b>, upload <b>screening Images</b>,
+        write <b>reports</b>, and link reports to a <b>screening History</b>. <br /> <br />
+
+        Each <b>report</b> can be linked to multiple <b>screening Images</b>; the content (explanation or
+        observation) of each <b>report</b> will be in text only. MPs have full control over <b>reports</b>, while
+        Patients can only read them. <br /> <br />
+
+        The <b>Patients</b> will be able to create their <b>patient accounts</b> either on their own or when
+        they receive a screening. The patients will fill in their personal details necessary for contact
+        as their <b>patient profile</b>; they can also input extra details - such as medical history - which
+        could be referenced by the MPs. MPs will have full control over the patient accounts and
+        patient profile; while Patients - have CRU permissions - will need to <b>request</b> for
+        Administrator's approval to Delete their profile (along with related <b>screening history</b> and
+        <b>reports</b>) in the system to prevent accidental deletion. <br /> <br />
+
+        <b>Screening history</b> will be added after the Patients have their accounts created. MPs have
+        full control over CRUD operations for scanning history entries while Patients can only
+        Read or <b>request</b> Update/Deletion. <br /> <br />
+    </div>
 </main>

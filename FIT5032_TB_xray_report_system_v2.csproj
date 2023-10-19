@@ -286,6 +286,7 @@
     <Content Include="Views\ScreeningHistories\Index.cshtml" />
     <Content Include="Views\User\LoginFail.cshtml" />
     <Content Include="Views\User\LogoutSuccess.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
