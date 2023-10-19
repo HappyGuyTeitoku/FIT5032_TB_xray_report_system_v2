@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using FIT5032_TB_xray_report_system_v2.Models;
 using System.Diagnostics;
 using System.Web.Security;
+using System.Net;
 
 namespace FIT5032_TB_xray_report_system_v2.Controllers
 {
@@ -178,5 +179,38 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             var model = db.UserSet;
             return View(model);
         }
+
+        // GET: User for EDIT
+        [HttpGet]
+        public ActionResult UpdateDetails(int? id)
+        { 
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.UserSet.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: User/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateDetails([Bind(Include = "")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
+
     }
 }
