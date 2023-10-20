@@ -16,5 +16,6 @@ namespace FIT5032_TB_xray_report_system_v2.Models
     {
         public int report_id { get; set; }
         public string report_content { get; set; }
+        public int ScreeningHistoryReport_Report_sh_id { get; set; }
     }
 }

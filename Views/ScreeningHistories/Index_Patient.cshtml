@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FIT5032_TB_xray_report_system_v2.Models.ScreeningHistory>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.sh_datetime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sh_additional)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MedicalProfessional.user_username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient.user_username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Report.report_content)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.sh_datetime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sh_additional)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MedicalProfessional.user_username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patient.user_username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Report.report_content)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.sh_id })
+        </td>
+    </tr>
+}
+
+</table>

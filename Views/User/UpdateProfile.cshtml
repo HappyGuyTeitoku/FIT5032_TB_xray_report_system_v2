@@ -54,7 +54,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.user_status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.user_status, new { htmlAttributes = new { @class = "form-control" } })
+                <select id="user_status" name="user_status" class="form-control">
+                    <option value="active">Active</option>
+                    <option value="disabled">Disabled</option>
+                </select>
                 @Html.ValidationMessageFor(model => model.user_status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,6 +68,32 @@
             @Html.LabelFor(model => model.user_status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-2">
                 <label class="form-control"> @ViewBag.UserStatus </label>
+            </div>
+        </div>
+    }
+
+    @if ((string)Session["UserRole"] == "Patient")
+    {
+        // Patient Specific Details
+        // Address
+        <div class="form-group">
+            <label class="control-label col-md-2">Address:</label>
+            <div class="col-md-5">
+                <input type="text" name="patient_address" class="form-control" placeholder="3 This Street, Liquid Grove, SOLID 1367" />
+            </div>
+        </div>
+        // Phone
+        <div class="form-group">
+            <label class="control-label col-md-2">Mobile Number:</label>
+            <div class="col-md-5">
+                <input type="text" name="patient_phone" class="form-control" placeholder="04XX XXX XXX" />
+            </div>
+        </div>
+        // Medical History
+        <div class="form-group">
+            <label class="control-label col-md-2">Medical History:</label>
+            <div class="col-md-8">
+                <input type="text" name="patient_medicalhistory" class="form-control" placeholder="Any health conditions that might affect the respitory system..." />
             </div>
         </div>
     }

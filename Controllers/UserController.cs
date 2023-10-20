@@ -32,7 +32,7 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             // Initialise Session Manager values
             Session["UserId"] = null;
             Session["Username"] = null;
-            Session["UserRole"] = "NotFound";
+            Session["UserRole"] = null;
 
             string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\VisualStudiosProjects\FIT5032_TB_xray_report_system_v2\App_Data\FIT5032_TB_xray_report_system_v2.mdf;Integrated Security=True;Connect Timeout=30";
             SqlConnection con = new SqlConnection(conString);
@@ -78,7 +78,7 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
                                 Session["UserRole"] = "Patient";
                                 break;
                             default:
-                                Session["UserRole"] = "NotFound";
+                                Session["UserRole"] = null;
                                 break;
                         }
                         break;
@@ -180,7 +180,9 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             return View(model);
         }
 
-        // GET: User for EDIT
+        //=============== Administrators Only: Account Editing ===============
+        // GET: User for UpdateDetails (Modify/Edit)
+        // ** For Administrators **
         [HttpGet]
         public ActionResult UpdateDetails(int? id)
         { 
@@ -193,15 +195,17 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserStatus = user.user_status;
             return View(user);
         }
 
-        // POST: User/Edit/5
+        // POST: User/UpdateDetails/5
+        // ** For Administrators **
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateDetails([Bind(Include = "")] User user)
+        public ActionResult UpdateDetails([Bind(Include = "user_username,user_password,user_email,user_fullname,user_status")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -211,6 +215,122 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             }
             return View(user);
         }
+        //=============== Administrators Only: Account Editing ===============
+
+
+        // GET: User for UpdateProfile (Modify/Edit)
+        // ** For everyone to edit THEIR OWN user details **
+        [HttpGet]
+        public ActionResult UpdateProfile()
+        {
+            if (Session["UserId"] != null)
+            {
+                int id = (int)Session["UserId"];
+                #pragma warning disable CS0472
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                User user = db.UserSet.Find(id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.UserStatus = user.user_status;
+                return View(user);
+            }
+            return RedirectToAction("Index","Home");
+        }
+
+        // POST: User/UpdateProfile/5
+        // ** For everyone to edit THEIR OWN user details **
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateProfile([Bind(Include = "user_username,user_password,user_email,user_fullname,")] User updatedUser, string patient_address,string patient_phone, string patient_medicalhistory)
+        {
+            if (Session["UserId"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingUser = db.UserSet.Find(Session["UserId"]);
+
+                    existingUser.user_username = updatedUser.user_username;
+                    existingUser.user_password = updatedUser.user_password;
+                    existingUser.user_email = updatedUser.user_email;
+                    existingUser.user_fullname = updatedUser.user_fullname;
+
+                    var user_patientdata = db.UserSet_Patient.Find(Session["UserId"]);
+                    if (user_patientdata != null)
+                    {
+                        user_patientdata.patient_address = patient_address;
+                        user_patientdata.patient_phone = patient_phone;
+                        user_patientdata.patient_medical_history = patient_medicalhistory;
+                    }
+
+                    db.Entry(existingUser).State = EntityState.Modified;
+                    db.Entry(user_patientdata).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            return View("UpdateProfile");
+        }
+
+
+        // GET: User/Delete/5
+        public ActionResult Delete(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User deleting_user = db.UserSet.Find(id);
+            if (deleting_user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(deleting_user);
+        }
+
+        // POST: User/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            User user = db.UserSet.Find(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.UserSet.Remove(user);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: User/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.UserSet.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            if (Session["UserRole"] != null)
+            {
+                return View(user);
+            }
+            return HttpNotFound();
+        }
+
 
     }
 }

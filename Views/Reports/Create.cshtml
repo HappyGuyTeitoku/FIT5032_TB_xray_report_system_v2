@@ -23,6 +23,17 @@
     </div>
 
     <div class="form-group">
+        @Html.Label("Select Date:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{
+                var screeningHistoryId = ViewBag.ScreeningHistoryId as SelectList;
+                var selectedValue = ViewBag.SelectedScreeningHistoryId;
+            }
+            @Html.DropDownList("SelectedScreeningHistoryId", screeningHistoryId, "Select Screening History", new { @class = "form-control", @value = selectedValue })
+        </div>
+    </div>
+
+    <div class="form-group">
         @* Add a file upload input *@
         <label class="control-label col-md-2" for="file">Upload Screening Image:</label>
         <div class="col-md-10">

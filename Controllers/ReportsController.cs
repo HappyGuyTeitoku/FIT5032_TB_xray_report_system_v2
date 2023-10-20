@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,9 +15,18 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
     public class ReportsController : Controller
     {
         private TB_xray_systemsContainer db = new TB_xray_systemsContainer();
+        SqlConnection con = new SqlConnection();
+        SqlCommand cmd = new SqlCommand();
+        SqlDataReader sdr;
 
         // GET: Reports
         public ActionResult Index()
+        {
+            return View(db.ReportSet.ToList());
+        }
+
+        // GET: Reports
+        public ActionResult Index_Patient()
         {
             return View(db.ReportSet.ToList());
         }
@@ -33,13 +43,36 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             {
                 return HttpNotFound();
             }
-            return View(report);
+            if (Session["UserRole"] != null) 
+            {
+                return View(report);
+            }
+            return HttpNotFound();
+        }
+
+        // GET: Reports/Details_Patient/5
+        public ActionResult Details_Patient(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Report report = db.ReportSet.Find(id);
+            if (report == null)
+            {
+                return HttpNotFound();
+            }
+            if (Session["UserRole"] != null)
+            {
+                return View(report);
+            }
+            return HttpNotFound();
         }
 
         // GET: Reports/Create
         public ActionResult Create()
         {
-            ViewBag.ScreeningHistoryId = new SelectList(db.ScreeningHistorySet, "sh_id");
+            ViewBag.ScreeningHistoryId = new SelectList(db.ScreeningHistorySet, "sh_id", "sh_datetime");
             ViewBag.PatientId = new SelectList(db.UserSet_Patient, "user_id", "user_fullname");
             ViewBag.MedicalProfessionalId = new SelectList(db.UserSet_MedicalProfessional, "user_id", "user_fullname");
 
@@ -51,15 +84,16 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "report_id,report_content")] Report report, IEnumerable<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "report_id,report_content")] Report report, IEnumerable<HttpPostedFileBase> files, string SelectedScreeningHistoryId)
         {
             if (ModelState.IsValid)
             {
-                var newScreeningHistory = new ScreeningHistory();
-                newScreeningHistory.sh_additional = "This SH is automatically created";
-                newScreeningHistory.sh_datetime = DateTime.Now;
-                db.ScreeningHistorySet.Add(newScreeningHistory);
-                
+                string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\VisualStudiosProjects\FIT5032_TB_xray_report_system_v2\App_Data\FIT5032_TB_xray_report_system_v2.mdf;Integrated Security=True;Connect Timeout=30";
+                SqlConnection con = new SqlConnection(conString);
+
+                cmd.Connection = con;
+                con.Open();
+
                 if (files != null) { 
                     foreach (var file in files)
                     {
@@ -70,19 +104,23 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
                             string filePath = Path.Combine(Server.MapPath("~/App_Data/Uploads"), fileName);
                             file.SaveAs(filePath);
 
-                            var newImage = new ScreeningImage();
+                            // var newImage = new ScreeningImage();
 
-                            newImage.si_file = filePath;
-                            newImage.ScreeningHistory_sh_id = newScreeningHistory.sh_id;
+                            //newImage.si_file = filePath;
+                            //newImage.ScreeningHistory_sh_id = int.Parse(SelectedScreeningHistoryId);
 
                             // Add the image as record into ScreeningImages
-                            db.ScreeningImageSet.Add(newImage);
-                        
+                            // db.ScreeningImageSet.Add(newImage);
+                            cmd.CommandText = "INSERT INTO ScreeningImageSet (si_file, ScreeningHistory_sh_id) VALUES ('"+filePath+"',"+ int.Parse(SelectedScreeningHistoryId) + ")";
+                            cmd.ExecuteNonQuery();
+                            cmd.CommandText = string.Empty;
                         }
                     }
                 }
-                db.ReportSet.Add(report);
-                db.SaveChanges();
+                // report.ScreeningHistoryReport_Report_sh_id = int.Parse(SelectedScreeningHistoryId);
+                cmd.CommandText = "INSERT INTO ReportSet (report_content,ScreeningHistoryReport_Report_sh_id) VALUES ('"+report.report_content+"',"+ int.Parse(SelectedScreeningHistoryId) + ")";
+                // db.ReportSet.Add(report);
+                // db.SaveChanges();
                 return RedirectToAction("Index");
             }
 

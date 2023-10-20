@@ -23,8 +23,30 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             return View(screeningHistorySet.ToList());
         }
 
+        // GET: ScreeningHistories
+        public ActionResult Index_Patient()
+        {
+            var screeningHistorySet = db.ScreeningHistorySet.Include(s => s.MedicalProfessional).Include(s => s.Patient).Include(s => s.Report);
+            return View(screeningHistorySet.ToList());
+        }
+
         // GET: ScreeningHistories/Details/5
         public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ScreeningHistory screeningHistory = db.ScreeningHistorySet.Find(id);
+            if (screeningHistory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(screeningHistory);
+        }
+
+        // GET: ScreeningHistories/Details_Patient/5
+        public ActionResult Details_Patient(int? id)
         {
             if (id == null)
             {
@@ -44,6 +66,33 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             ViewBag.MedicalProfessional_user_id = new SelectList(db.UserSet_MedicalProfessional, "user_id", "user_username");
             ViewBag.Patient_user_id = new SelectList(db.UserSet_Patient, "user_id", "user_username");
             ViewBag.sh_id = new SelectList(db.ReportSet, "report_id", "report_content");
+            // Screening history can only be created if it is related to the logged in user
+            if ((string)Session["UserRole"] == "MedicalProfessional")
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                var mpOptions = db.UserSet_MedicalProfessional
+                    .Where(mp => mp.user_id == userId)
+                    .Select(mp => new SelectListItem
+                    {
+                        Value = mp.user_id.ToString(),
+                        Text = mp.user_username
+                    })
+                    .ToList();
+                ViewBag.MedicalProfessional_user_id = new SelectList(mpOptions, "Value", "Text");
+            }
+            if ((string)Session["UserRole"] == "Patient")
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                var patientOptions = db.UserSet_Patient
+                    .Where(patient => patient.user_id == userId)
+                    .Select(patient => new SelectListItem
+                    {
+                        Value = patient.user_id.ToString(),
+                        Text = patient.user_username
+                    })
+                    .ToList();
+                ViewBag.Patient_user_id = new SelectList(patientOptions, "Value", "Text");
+            }
             return View();
         }
 
@@ -105,6 +154,34 @@ namespace FIT5032_TB_xray_report_system_v2.Controllers
             ViewBag.MedicalProfessional_user_id = new SelectList(db.UserSet, "user_id", "user_username", screeningHistory.MedicalProfessional_user_id);
             ViewBag.Patient_user_id = new SelectList(db.UserSet, "user_id", "user_username", screeningHistory.Patient_user_id);
             ViewBag.sh_id = new SelectList(db.ReportSet, "report_id", "report_content", screeningHistory.sh_id);
+
+            // Screening history can only be created if it is related to the logged in user
+            if ((string)Session["UserRole"] == "MedicalProfessional")
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                var mpOptions = db.UserSet_MedicalProfessional
+                    .Where(mp => mp.user_id == userId)
+                    .Select(mp => new SelectListItem
+                    {
+                        Value = mp.user_id.ToString(),
+                        Text = mp.user_username
+                    })
+                    .ToList();
+                ViewBag.MedicalProfessional_user_id = new SelectList(mpOptions, "Value", "Text");
+            }
+            if ((string)Session["UserRole"] == "Patient")
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                var patientOptions = db.UserSet_Patient
+                    .Where(patient => patient.user_id == userId)
+                    .Select(patient => new SelectListItem
+                    {
+                        Value = patient.user_id.ToString(),
+                        Text = patient.user_username
+                    })
+                    .ToList();
+                ViewBag.Patient_user_id = new SelectList(patientOptions, "Value", "Text");
+            }
             return View(screeningHistory);
         }
 

@@ -288,6 +288,13 @@
     <Content Include="Views\User\LogoutSuccess.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\UpdateDetails.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\UpdateProfile.cshtml" />
+    <Content Include="Views\ScreeningHistories\Index_Patient.cshtml" />
+    <Content Include="Views\Reports\Index_Patient.cshtml" />
+    <Content Include="Views\ScreeningHistories\Details_Patient.cshtml" />
+    <Content Include="Views\Reports\Details_Patient.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />

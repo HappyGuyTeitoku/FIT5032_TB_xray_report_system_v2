@@ -75,6 +75,55 @@
                         </li>
                     }
 
+                    @if ((string)Session["UserRole"] == "MedicalProfessional")
+                    {
+                        <!-- Reports Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Reports
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View Rp", "Index", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("New Rp", "Create", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+
+                        <!-- Screening History Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ScreeningHistories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View...", "Index", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("New", "Create", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
+
+                    @if ((string)Session["UserRole"] == "Patient")
+                    {
+                        <!-- Reports Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Reports
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View Rp", "Index_Patient", "Reports", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+
+                        <!-- Screening History Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ScreeningHistories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("View", "Index_Patient", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("New", "Create", "ScreeningHistories", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                    }
+
                     @if ((string)Session["UserRole"] == "Administrator")
                     {
                         <!-- Users Dropdown (Account control for Admins) -->
@@ -110,6 +159,7 @@
                                 @Session["UserRole"] @Session["Username"]
                             </a>
                             <div class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                @Html.ActionLink("Edit Profile", "UpdateProfile", "User", new { area = "" }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Logout", "LogoutSuccess", "User", new { area = "" }, new { @class = "dropdown-item" })
                             </div>
                         </li>
@@ -122,7 +172,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - TB X-Ray Report System</p>
         </footer>
     </div>
 

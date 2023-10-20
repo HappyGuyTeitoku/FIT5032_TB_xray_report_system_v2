@@ -30,6 +30,7 @@
             @Html.Label("Role:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-2">
                 <label class="form-control">Patient</label>
+                @Html.Hidden("SelectedRole", "Patient")
             </div>
         </div>
     }
